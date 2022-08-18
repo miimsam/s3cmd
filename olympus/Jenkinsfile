@@ -15,7 +15,7 @@ node('docker') {
             credentialsId:  'quay-robot',
             url: 'quay.dc.xing.com',
         ]]) {
-            sh"docker build -t quay.dc.xing.com/data-platform/s3cmd:${tag} -f Dockerfile ."
+            sh"docker build -t quay.dc.xing.com/data-platform/s3cmd -f Dockerfile ."
         }
     }
 
