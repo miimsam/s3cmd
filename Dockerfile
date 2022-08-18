@@ -1,16 +1,9 @@
-FROM alpine:latest
+FROM debian:stable
 
-RUN apk add --no-cache python3 py-pip py-setuptools git ca-certificates
+RUN apt clean && apt update && apt install wget gnupg2 -y &&\
+    wget -O- -q http://s3tools.org/repo/deb-all/stable/s3tools.key | apt-key add - &&\
+    apt-get update &&\
+    apt-get install s3cmd -y
+ADD .s3cmd /opt/.s3cmd
 
-RUN pip install python-magic \
-  && git clone https://github.com/s3tools/s3cmd.git /tmp/s3cmd \
-  && cd /tmp/s3cmd \
-  && python3 /tmp/s3cmd/setup.py install \
-  && cd / \
-  && rm -rf /tmp/s3cmd \
-  && apk del py-pip git
-
-WORKDIR /s3
-
-ENTRYPOINT ["s3cmd"]
-CMD ["--help"]
+ENTRYPOINT [ "s3cmd -c /opt/.s3cmd" ]
