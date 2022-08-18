@@ -18,7 +18,7 @@ node('docker') {
             credentialsId:  'quay-robot',
             url: 'quay.dc.xing.com',
         ]]) {
-            sh"docker build -t quay.dc.xing.com/data-platform/s3cmd:${env.BUILD_ID} -f docker/Dockerfile docker"
+            sh"docker build -t quay.dc.xing.com/data-platform/s3cmd -f docker/Dockerfile docker"
         }
     }
 
@@ -27,7 +27,7 @@ node('docker') {
             credentialsId:  'quay-robot',
             url: 'quay.dc.xing.com',
         ]]) {
-            sh"docker push quay.dc.xing.com/data-platform/s3cmd:${env.BUILD_ID} && docker push quay.dc.xing.com/data-platform/s3cmd"
+            sh"docker push quay.dc.xing.com/data-platform/s3cmd"
         }
     }
 
