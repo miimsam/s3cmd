@@ -9,27 +9,21 @@ olympus.productionBranch = 'main'
 
 
 node('docker') {
+
+
     stage('Checkout') {
         checkout scm
     }
 
-    stage('Build images') {
+    stage('Build & Push images') {
         withDockerScopedCredentials([[
             credentialsId:  'quay-robot',
             url: 'quay.dc.xing.com',
         ]]) {
-            sh"docker build -t quay.dc.xing.com/data-platform/s3cmd:${env.BUILD_ID} -f docker/Dockerfile docker"
+            def customImage = docker.build("data-platform/s3cmd:${env.BUILD_ID}", "./docker")
+            customedImage.push('latest')
+            customImage.push()
         }
     }
-
-    stage('Push images') {
-        withDockerScopedCredentials([[
-            credentialsId:  'quay-robot',
-            url: 'quay.dc.xing.com',
-        ]]) {
-            sh"docker push quay.dc.xing.com/data-platform/s3cmd:${env.BUILD_ID}"
-        }
-    }
-
 
 }
