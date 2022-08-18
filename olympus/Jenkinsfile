@@ -9,6 +9,9 @@ olympus.productionBranch = 'main'
 
 
 node('docker') {
+    stage('Checkout') {
+        checkout scm
+    }
 
     stage('Build images') {
         withDockerScopedCredentials([[
