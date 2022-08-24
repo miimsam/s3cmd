@@ -1,9 +1,13 @@
-FROM debian:stable
+FROM alpine:3.16.2
 
-RUN apt clean && apt update && apt install wget gnupg2 -y &&\
-    wget -O- -q http://s3tools.org/repo/deb-all/stable/s3tools.key | apt-key add - &&\
-    apt-get update &&\
-    apt-get install s3cmd -y
-COPY s3cfg /opt/s3cfg
+RUN apk update &&\
+    apk add python3 py-pip py-setuptools git ca-certificates &&\
+    pip3 install python-dateutil s3cmd
 
-ENTRYPOINT [ "s3cmd -c /opt/s3cfg" ]
+ADD s3cfg /opt/.s3cfg
+ADD run.sh /opt/run.sh
+RUN chmod +x /opt/run.sh
+
+WORKDIR /opt
+ENTRYPOINT ["./run.sh"]
+CMD [ "" ]
