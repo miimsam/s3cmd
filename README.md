@@ -1,4 +1,4 @@
-# A lightweight docker image for [qs3cmd](https://github.com/s3tools/s3cmd)
+# A lightweight docker image for [s3cmd](https://github.com/s3tools/s3cmd)
 
 #### Build me:
 
